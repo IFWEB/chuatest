@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+	<title>选择地区</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<link rel="stylesheet" type="text/css" href="./src/mobile-select-area.css">
+	<script type="text/javascript" src="./src/zepto.js"></script>
+	<script type="text/javascript" src="./src/dialog.js"></script>
+	<script type="text/javascript" src="./src/mobile-select-area-nfd.js"></script>
+</head>
+<style type="text/css">
+	html{
+		font-size: 50px;
+	}
+	body>div {
+		font-size: 0.32rem;
+		line-height: 40px;
+		color: #666;
+	}
+</style>
+
+<body>
+	<div>
+	静态数据源：<input type="text" id="area" data-value="1,1" value="" />
+	</div>
+	<script>
+		var json = [{
+			"id": 1,
+			"name": "浙江省",
+			"child": [{
+				"id": "1",
+				"name": "杭州市",
+				"child": [{
+					"id": 1,
+					"name": "滨江区"
+				}, {
+					"id": 2,
+					"name": "西湖区"
+				}, {
+					"id": 3,
+					"name": "余杭区"
+				}, {
+					"id": 4,
+					"name": "留下区"
+				}]
+			}, {
+				"id": "2",
+				"name": "宁波市",
+				"child": []
+			}, {
+				"id": "3",
+				"name": "温州市",
+				"child": []
+			}]
+		}, {
+			"id": 2,
+			"name": "江苏省",
+			"child": [{
+				"id": "1",
+				"name": "南京",
+				"child": [{
+					"id": 1,
+					"name": "解放区"
+				}]
+			}]
+		}, {
+			"id": 3,
+			"name": "湖北省"
+		}];
+		var selectArea = new MobileSelectArea();
+	    //值保存在$cont节点的data-value中
+	    selectArea.init({
+	        trigger: '#area',
+	        data: json,
+	        default: 0,
+	        level: 2,
+	        position: "bottom",
+	        callback: function(scroller,text,value){
+	            if(!text[0] || !text[1]){//没有选全到市
+	                selectArea.reset();
+	            }
+	        }
+	    });
+	</script>
+</body>
+
+</html>

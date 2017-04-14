@@ -1,0 +1,24 @@
+@import url(dialog.css);
+/*selectarea*/
+.ui-dialog {box-sizing:border-box; }
+.ui-scroller{position: relative;height: 4.5rem;width: 100%; min-width: 260px;font-size: 0.28rem;font-weight: normal;}
+.ui-scroller>div{width: 33%;display: inline-block;position:relative;height: 4.5rem;overflow: hidden;box-sizing:border-box;}
+.ui-scroller>div:first-child{
+	float: left;
+}
+.ui-scroller>div:nth-child(2){
+	float: right;
+}
+.ui-scroller dl{position: absolute;width: 100%;margin: 0;top:0.9rem;}
+.ui-scroller dd{padding:0;margin:0;overflow: hidden; text-overflow:ellipsis;width:100%;height: 0.9rem;line-height: 0.9rem;}
+.ui-scroller dd.focus{font-size: 0.32rem;}
+.ui-scroller{-webkit-mask: -webkit-gradient(linear,50% 50%, 50% 100%,from(rgba(222,187,71,1)),to(rgba(36,142,36,0)));}
+.ui-scroller-mask{-webkit-mask: -webkit-gradient(linear,0% 50%,0% 0%,from(rgba(222,187,71,1)),to(rgba(36,142,36,0))); padding: 0 0.5rem;}
+.ui-scroller p{position: absolute;top:0.9rem;height:0.9rem;width: 100%;margin: 0;z-index: -1;border-left:none;border-right:none;}
+.ui-scroller .ui-dialog-action{margin-top: 10px;}
+.ui-dialog-bottom{
+	border-radius: 0;
+}
+.ui-dialog-bottom .ui-dialog-action .ui-confirm-close, .ui-dialog-action .ui-confirm-no{
+	border:none;
+}
