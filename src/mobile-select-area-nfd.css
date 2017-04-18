@@ -1,4 +1,4 @@
-@import url(dialog.css);
+/*@import url(dialog.css);不要在里面引用，某些打包会出问题@import不在顶部将无效*/
 /*selectarea*/
 .ui-dialog {box-sizing:border-box; }
 .ui-scroller{position: relative;height: 4.5rem;width: 100%; min-width: 260px;font-size: 0.28rem;font-weight: normal;}

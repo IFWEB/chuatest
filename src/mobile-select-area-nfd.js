@@ -3,7 +3,8 @@
  * User: chua
  * Date: 2017-04-14
 
- *@discription 地址选择插件，基于$和$.extend https://github.com/IFWEB/mobile-select-area-nfd.git
+ *@discription 地址选择插件(在田想兵的mobile-select-area基础上修改完善.)，基于$和$.extend https://github.com/IFWEB/mobile-select-area-nfd.git
+ 基于dialog.js,dialog.scss,mobile-select-area-nfd.css
  *实例化var selectArea = new MobileSelectArea();
  *初始化 selectArea.init(data);
  *@param data {Object} 初始化参数
