@@ -131,9 +131,9 @@
   background-color: #999999; }
 
 .ui-dialog-action {
-  position: absolute;
-  bottom: 4.5rem;
-  height: 5.4rem;
+  /*position: relative;*/
+  /*bottom: 4.5rem;
+  height: 5.4rem;*/
   line-height: 0.9rem;
   border-collapse: collapse;
   border-spacing: 0;
@@ -144,7 +144,6 @@
   padding: 0;
   margin: 0; }
   .ui-dialog-action thead{
-  height: 0.9rem;
   border-bottom: 1px solid #e6e6e6;
 }
  .ui-dialog-action tbody{
@@ -156,6 +155,8 @@
   border-bottom: 1px solid #e6e6e6 
  }
 .ui-dialog-action td {
+  padding:0 1px;
+  height: 0.9rem;
   text-align: center;
   border:none;
   }

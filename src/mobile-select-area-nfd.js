@@ -30,6 +30,7 @@
     data.callback: {Function($scroller,text,value)} 选中后的回调;传参第一个是容器，第二个是选中后的text值，第三个参数是选中后的id。并且this指向当前对象。默认有填充trigger的value值，以及赋值它后面紧跟着的hidden的value值，以逗号分隔id，空格分隔文字
 	data.eventName {String} tap|click,触发事件名称，默认click,使用zeptojs的可以用tap事件
 	data.showSize {Number} 一屏展示的地址条数，默认为5条
+	data.buttons {Array} 按钮栏文案，包含data.buttons[i].no, data.buttons[i].yes data.buttons[i].text
 
  @interface show {Function} 展示地址选择框，selectArea.show();
  @interface cancel {Function} 取消选择，保持原来的值 selectArea.cancel()
@@ -147,20 +148,35 @@
 				for (var i = 0; i < _this.level; i++) {
 					dlgContent += '<div style="width:'+diliver+'%"></div>';
 				};
-				var settings, buttons;
+				var settings = {}, buttons;
+				buttons = _this.settings.buttons;
+
+				function animationEnd(){
+					_this.itemHeight = $('#' + _this.id + '>div').height()/_this.showSize;//this.settings.itemHeight || this.itemHeight;
+					_this.mtop = (_this.showSize - 1)*_this.itemHeight/2;
+					_this.getData().done(function() {
+						_this.format();
+					});
+				}
 				if (_this.settings.position == "bottom") {
 					settings = {
 						position: "bottom",
 						width: "100%",
 						className: "ui-dialog-bottom",
 						animate: false
+					};
+					if(!buttons){						
+						var buttons = [{
+							'no': '取消'
+						},{
+							'text': '选择开户地区'
+						}, {
+							'yes': '确定'
+						}];
 					}
-					var buttons = [{
-						'no': '取消'
-					}, {
-						'yes': '确定'
-					}];
-				}
+				}else{
+					settings.animationEnd = animationEnd;
+				}				
 				$.confirm('<div class="ui-scroller-mask"><div id="' + _this.id + '" class="ui-scroller">' + dlgContent + '</div></div>', buttons, function(t, c) {
 					if (t == "yes") {
 						_this._submit()
@@ -172,13 +188,11 @@
 				}, $.extend({
 					width: 320,
 					height: 215
-				}, settings));
-				_this.itemHeight = $('#' + _this.id + '>div').height()/this.showSize;//this.settings.itemHeight || this.itemHeight;
-				_this.mtop = (this.showSize - 1)*this.itemHeight/2;
+				}, settings));				
 				_this.$scroller = $('#' + _this.id);
-				_this.getData().done(function() {
-					_this.format();
-				});
+				if (_this.settings.position == "bottom"){
+					animationEnd();
+				}
 		},
 		bindEvent: function() {
 			var _this = this;

@@ -77,14 +77,7 @@
 	        data: json,
 	        default: 0,
 	        level: 2,
-	        position: "bottom",
-	        buttons:	[{
-							'no': '取消'
-						},{
-							'text': '选择开户地区'
-						}, {
-							'yes': '确定'
-						}],
+	        // position: "bottom",
 	        callback: function(scroller,text,value){
 	            if(!text[0] || !text[1]){//没有选全到市
 	                selectArea.reset();

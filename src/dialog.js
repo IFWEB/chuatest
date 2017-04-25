@@ -86,13 +86,16 @@
                     btnstr += '<td><button class="ui-confirm-submit " data-type="yes">' + item.yes + '</button></td>';
                 }
                 if (item.no) {
-                    btnstr += '<td><button class="ui-confirm-no" data-type="no">' + item.no + '</button></td><td class="ui-confirm-titie">选择开户地区</td>';
+                    btnstr += '<td><button class="ui-confirm-no" data-type="no">' + item.no + '</button></td>';
+                }
+                if (item.text) {
+                    btnstr += '<td class="ui-confirm-titie">'+item.text+'</td>';
                 }
                 if (item.close) {
                     btnstr += '<td><button class="ui-confirm-close js-dialog-close" data-type="close">' + item.close + '</button></td>';
                 }
             }
-            action = '<table class="ui-dialog-action"><thead><tr>' + btnstr + '</tr></thead></table><div class="dialog-line"><dl ><dd></dd><dd ></dd><dd></dd><dd></dd><dd></dd><dd></dd></dl></div>';
+            action = '<table class="ui-dialog-action"><thead><tr>' + btnstr + '</tr></thead></table>';
             if (settings.position == "bottom") {
                 html = action + html;
             } else {
@@ -257,6 +260,8 @@
             });
             $(this.dialogContainer).on('hide', function() {
                 _this.hide();
+            }).on('animationEnd webkitAnimationEnd', function(){
+                _this.settings.animationEnd && _this.settings.animationEnd();
             })
         },
         dispose: function() {
