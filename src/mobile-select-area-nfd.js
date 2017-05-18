@@ -25,7 +25,7 @@
 	    }];
     data.default {Number} 0|1，默认值为0； 0表示没有默认选项，用"——"代替，1表示有默认选项，默认选中第一个。
     data.level: {Number} 级别数，默认是3级的,最大3级,省、市、区。
-    data.value {Arrar[Number]} 初始值,默认三级值[0, 0, 0];
+    data.value {String} 初始值,默认三级值"0,0,0";
     data.position: {String},当这个值为"bottom"时，弹层固定显示在底部，不传时居中显示,默认居中.
     data.callback: {Function($scroller,text,value)} 选中后的回调;传参第一个是容器，第二个是选中后的text值，第三个参数是选中后的id。并且this指向当前对象。默认有填充trigger的value值，以及赋值它后面紧跟着的hidden的value值，以逗号分隔id，空格分隔文字
 	data.eventName {String} tap|click,触发事件名称，默认click,使用zeptojs的可以用tap事件
@@ -89,34 +89,80 @@
 			this.showSize = this.settings.showSize || this.showSize;
 			this._initData();
 			this.bindEvent();
+			//初始化选择的文案
+			this.yes();
 		},
 		_initData: function(){
-			//设置出事默认值
-			if(this.diff == 0){//表示需要默认值
-				var value = '',text = '',
-					item = this.settings.data;
-				for(var i = 0; i < this.level; i++){
-					if(i == 0){
-						text += item[0].name;
-						value += item[0].id;
-					}else{
-						text += ' ' + item[0].name;
-						value += ',' + item[0].id;
-					}					
-					item = item[0].child;
+			if(!this.settings.value){
+				//设置出事默认值
+				if(this.diff == 0){//表示需要默认值
+					var value = '',text = '',
+						item = this.settings.data;
+					for(var i = 0; i < this.level; i++){
+						if(i == 0){
+							text += item[0].name;
+							value += item[0].id;
+						}else{
+							text += ' ' + item[0].name;
+							value += ',' + item[0].id;
+						}					
+						item = item[0].child;
+					}
+					this.settings.value = this.settings.value || value;
+					this.settings.text = this.settings.text || text;
+				}else{				
+					this.settings.value = this.settings.value || '0,0,0';
+					this.settings.text = this.settings.text || (this.$trigger.val() && this.$trigger.val()) || '  ';
 				}
-				this.settings.value = this.settings.value || value;
-				this.settings.text = this.settings.text || (this.$trigger.val() && this.$trigger.val().split(' ')) || text.split(' ');
-			}else{				
-				this.settings.value = this.settings.value || '0,0,0';
-				this.settings.text = this.settings.text || (this.$trigger.val() && this.$trigger.val().split(' ')) || ['', '', ''];
+			}else{
+				if(!this.settings.text){//没有text则设置text
+					this._getTextFromValue();
+				}
 			}
+						
 			this.value =  this.settings.value.split(",");
-			this.text = $.extend([],this.settings.text);
+			this.text = this.settings.text.split(this.separator);
 			//根据级数裁剪
 			this.value.length = this.text.length = this.level;
 			this.oldvalue = this.value.concat([]);
 			this.oldtext = this.text.concat([]);
+		},
+		//通过this.value获取对应城市text
+		_getTextFromValue: function(){
+			var self = this,
+				vals = self.settings.value.split(","),
+				texts = [],
+				uper = 0,
+				data = self.settings.data,
+				text = '';
+			function find(dt){
+				for(var i = 0, max = dt.length; i < max; i++){
+					if(dt[i].id == vals[uper]){
+						text = uper === 0?
+							dt[i].name:
+							text + self.separator + dt[i].name;
+						uper++;
+
+						//递归
+						dt[i].child && (dt[i].child.length > 0) && find(dt[i].child);
+						break;						
+					}
+				}
+			}
+			if(vals[0] != '0'){
+				find(data);
+				self.settings.text = text;
+			}else{
+				//修正this.settings.value
+				for(var i = 0, max = vals.length;i < max; i++){
+					vals[i] = 0;
+					texts[i] = '';
+				}
+				self.settings.value = vals.join(',');
+				self.settings.text = texts.join(self.separator);
+				text = self.settings.text;
+			}
+			return text;
 		},
 		getData: function() {
 			var _this = this;
@@ -201,7 +247,7 @@
 				$('input').blur();
 				_this.show();
 				var start = 0,
-					end = 0
+					end = 0;
 				_this.$scroller.children().bind('touchstart', function(e) {
 					start = (e.changedTouches || e.originalEvent.changedTouches)[0].pageY;
 				});
