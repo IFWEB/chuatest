@@ -197,6 +197,8 @@
 		bindEvent: function() {
 			var _this = this;
 			this.$trigger[_this.settings.eventName](function(e) {
+				//让所有的input框失焦，ios上面光标会展示在最上面
+				$('input').blur();
 				_this.show();
 				var start = 0,
 					end = 0
